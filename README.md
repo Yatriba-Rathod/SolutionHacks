@@ -3,7 +3,7 @@ Solution Hacks 2025
 
 Team:
 
-Yatri Rathod\n
+Yatri Rathod /n
 Brahmnoor Kahlon
 Harshiv Gajjar
 
