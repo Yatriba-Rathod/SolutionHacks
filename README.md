@@ -32,11 +32,13 @@ Disability
 No Degree
 Pay
 Keep fetching opportunities using AI
+
+
 Things to do:
 Upgrade Simulation
 Integration of simulator
 UI
-AI for job reqruitement
+AI for job reqruitement - how to use gemini to find jobs. basically prompts. 
 User login - Database
 
 This is just a trial for Harshiv
