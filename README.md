@@ -17,13 +17,14 @@ Pitch: Many young people (students, first-generation grads, marginalized youth) 
 Job training using a simulator.
 
 User Profile
-XP points
-Choose company
-Select job
-GMAIL Interface
-Receive tasks and turn in the task
-Receive feedback
-Find jobs nearby.
+
+- XP points
+- Choose company
+- Select job
+  GMAIL Interface
+  Receive tasks and turn in the task
+  Receive feedback
+  Find jobs nearby.
 
 Filters for :
 ADHD
