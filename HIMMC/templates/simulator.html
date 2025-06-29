@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>How I Met My Career – Simulator</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f1f3f4;
+    }
+
+    .container {
+      display: flex;
+      height: 100vh;
+    }
+
+    .left-pane {
+      width: 35%;
+      background: white;
+      border-right: 1px solid #ddd;
+      overflow-y: auto;
+      padding: 10px;
+    }
+
+    .right-pane {
+      width: 65%;
+      padding: 20px;
+      overflow-y: auto;
+      background: #fff;
+    }
+
+    .email-item {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .email-item:hover {
+      background: #f0f0f0;
+    }
+
+    .email-subject {
+      font-weight: bold;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .email-body {
+      line-height: 1.6;
+    }
+
+    .response-form {
+      margin-top: 30px;
+    }
+
+    .response-form textarea {
+      width: 100%;
+      height: 120px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .response-form input[type="file"] {
+      margin-bottom: 10px;
+    }
+
+    .response-form button {
+      padding: 10px 20px;
+      margin-right: 10px;
+      background-color: #1a73e8;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .response-form button:hover {
+      background-color: #0f62c3;
+    }
+
+    .btn-group {
+      margin-top: 20px;
+    }
+
+    .btn-group button {
+      padding: 10px 16px;
+      margin-right: 10px;
+      font-size: 14px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      background-color: #1a73e8;
+      color: white;
+    }
+
+    .btn-group button:hover {
+      background-color: #0c57c2;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="email-list" class="left-pane">
+      <div class="email-item" data-id="welcome">
+        <strong>👋 Welcome Aboard!</strong><br><small>hr@himyc.com</small>
+      </div>
+    </div>
+
+    <div class="right-pane">
+      <h2 id="email-subject">👋 Welcome Aboard!</h2>
+      <div id="email-body">
+        <p>Hello and welcome to your new journey at <b>{{ company }}</b> as a <b>{{ role }}</b>!</p>
+        <p>We're excited to have you on board. Expect your first task shortly.</p>
+        <p>Best,<br>HR Team</p>
+      </div>
+
+      <div class="response-form hidden" id="response-section">
+        <h3>Your Response</h3>
+        <textarea id="response-text" placeholder="Write your response here..."></textarea>
+        <input type="file" id="response-files" multiple>
+        <br />
+        <button onclick="submitResponse()">Submit Response</button>
+      </div>
+
+      <div id="feedback-section"></div>
+    </div>
+  </div>
+
+  <script>
+    const company = "{{ company }}";
+    const role = "{{ role }}";
+    let latestTaskId = null;
+
+    function formatEmail(content) {
+      return content
+        .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
+        .replace(/\n/g, "<br>")
+        .replace(/\[boss name\]/gi, "Jordan");
+    }
+
+    function addEmailToList(email) {
+      const item = document.createElement("div");
+      item.className = "email-item";
+      item.dataset.id = email.id;
+      item.innerHTML = `<strong>${email.subject}</strong><br><small>${email.from}</small>`;
+      item.onclick = () => {
+        document.getElementById("email-subject").innerText = email.subject;
+        document.getElementById("email-body").innerHTML = formatEmail(email.body || '');
+        document.getElementById("response-section").classList.toggle("hidden", !email.allowReply);
+        document.getElementById("feedback-section").innerHTML = '';
+        latestTaskId = email.id;
+      };
+      document.getElementById("email-list").appendChild(item);
+    }
+
+    async function fetchTask() {
+      const res = await fetch(`/api/task?company=${encodeURIComponent(company)}&role=${encodeURIComponent(role)}`);
+      const data = await res.json();
+
+      if (data.task) {
+        const email = {
+          subject: "📬 New Task for You",
+          body: data.task,
+          from: "boss@himyc.com",
+          id: Date.now().toString(),
+          allowReply: true
+        };
+        addEmailToList(email);
+      }
+    }
+
+    async function submitResponse() {
+      const responseText = document.getElementById("response-text").value;
+      const files = document.getElementById("response-files").files;
+
+      const formData = new FormData();
+      formData.append("text", responseText);
+      formData.append("role", role);
+
+      for (let file of files) {
+        formData.append("files", file);
+      }
+
+      const res = await fetch("/api/feedback", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await res.json();
+
+      if (data.feedback) {
+        const feedbackEmail = {
+          subject: "📝 Feedback on Your Response",
+          body: data.feedback + `
+            <div class="btn-group">
+              <button onclick="fetchTask()">Next Task</button>
+              <button onclick="window.location.href='/'">Home</button>
+            </div>`,
+          from: "manager@himyc.com",
+          id: Date.now().toString(),
+          allowReply: false
+        };
+        addEmailToList(feedbackEmail);
+      }
+    }
+
+    window.onload = () => {
+      setTimeout(fetchTask, 3000);
+    };
+  </script>
+</body>
+</html>

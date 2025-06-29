@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Job Finder | How I Met My Career</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #007bff;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto 40px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .job-card {
+            border-left: 4px solid #007bff;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        .job-title {
+            color: #007bff;
+        }
+
+        .job-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <h1>Find Jobs</h1>
+
+    <form method="POST">
+        <label for="role">Job Role:</label>
+        <input type="text" id="role" name="role" required>
+
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" required>
+
+        <label for="pay_range">Pay Range (optional):</label>
+        <input type="text" id="pay_range" name="pay_range" placeholder="e.g. $60,000 - $100,000">
+
+        <label for="filters">Disability/Needs Filters:</label>
+        <select id="filters" name="filters" multiple>
+            <option value="adhd">ADHD-friendly</option>
+            <option value="no_degree">No degree required</option>
+            <option value="physical_disability">Physically accessible</option>
+        </select>
+
+        <button type="submit">Find Jobs</button>
+    </form>
+
+    {% if jobs %}
+        {% for job in jobs %}
+            <div class="job-card">
+                <h4 class="job-title">{{ job.title }}</h4>
+                <p><strong>Location:</strong> {{ job.location }}</p>
+                <p><strong>Pay:</strong> {{ job.pay }}</p>
+                <p><strong>Date Posted:</strong> {{ job.date_posted }}</p>
+                <p><strong>Apply By:</strong> {{ job.last_date_to_apply }}</p>
+                <p>{{ job.description }}</p>
+                <div class="job-buttons">
+                    <a href="{{ job.apply_url }}" class="btn btn-success" target="_blank">Apply Now</a>
+                    <a href="/update_resume" class="btn btn-secondary">Update Resume</a>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</body>
+</html>

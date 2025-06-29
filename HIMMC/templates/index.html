@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>How I Met My Career – Home</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 40px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    .button-container {
+      margin-top: 30px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 15px 30px;
+      margin: 15px;
+      font-size: 18px;
+      border: none;
+      border-radius: 6px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    .logout {
+      margin-top: 50px;
+      display: block;
+      color: #999;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <h1>👩‍💼 Welcome to <i>How I Met My Career</i></h1>
+  <p>Select a section to begin:</p>
+
+  <div class="button-container">
+    <a href="/dashboard" class="btn">📊 Dashboard</a>
+    <a href="/job_finder" class="btn">🔍 Job Finder</a>
+    <a href="/simulator?company=Google&role=Software Engineer" class="btn">💼 Start Simulation</a>
+  </div>
+
+  <a href="/logout" class="logout">Logout</a>
+</body>
+</html>
