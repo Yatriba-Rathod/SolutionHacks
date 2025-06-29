@@ -49,3 +49,23 @@ def search_and_generate_jobs(role):
     except json.JSONDecodeError:
         print("❌ JSON parse failed! Cleaned text above 👆")
         return []
+
+def tailor_resume(job, resume_text):
+    prompt = f"""
+    You are a career advisor. Here is the job description:
+
+    Title: {job['title']}
+    Description: {job['description']}
+    Key Skills: {', '.join(job['skills'])}
+
+    And here is the user's current resume content:
+
+    {resume_text}
+
+    Rewrite the resume to highlight the user's experience and skills that best match this role.
+    Make it professional, ATS-friendly, and use keywords from the job description naturally.
+    Return only the improved resume text.
+    """
+
+    response = model.generate_content(prompt)
+    return response.text.strip()
