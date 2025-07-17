@@ -1,3 +1,9 @@
 streamlit
 openai
 python-dotenv
+flask
+flask_cors
+bson
+bcrypt
+pymongo
+google.generativeai
